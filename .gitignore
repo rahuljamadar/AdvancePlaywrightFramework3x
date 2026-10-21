@@ -1,0 +1,14 @@
+
+# Playwright
+node_modules/
+.env
+/test-results/
+/playwright-report/
+/tta-report/
+/reports/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Command Code (local tool metadata)
+/.commandcode/

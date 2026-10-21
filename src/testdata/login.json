@@ -1,0 +1,30 @@
+{
+  "validUser": {
+    "username": "standard_user",
+    "password": "tta_secret",
+    "expectedPage": "inventory",
+    "expectedTitle": "TTACart - Products",
+    "expectedMessage": null
+  },
+  "invalidUsername": {
+    "username": "invalid-user@example.invalid",
+    "password": "not-a-real-password",
+    "expectedPage": "login",
+    "expectedTitle": "TTACart - Login",
+    "expectedMessage": "Epic sadface: Username and password do not match any user in this service"
+  },
+  "invalidPassword": {
+    "username": "standard_user",
+    "password": "wrong-password",
+    "expectedPage": "login",
+    "expectedTitle": "TTACart - Login",
+    "expectedMessage": "Epic sadface: Username and password do not match any user in this service"
+  },
+  "emptyCredentials": {
+    "username": "",
+    "password": "",
+    "expectedPage": "login",
+    "expectedTitle": "TTACart - Login",
+    "expectedMessage": null
+  }
+}
