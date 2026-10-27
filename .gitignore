@@ -10,5 +10,8 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Winston application logs
+/logs/
+
 # Command Code (local tool metadata)
 /.commandcode/
