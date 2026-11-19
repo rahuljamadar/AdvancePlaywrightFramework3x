@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('POST request - create booking', async ({ request }) => {
+    const baseURL = process.env.API_BASE_URL || 'https://restful-booker.herokuapp.com';
     const payload = {
         firstname: 'Jim',
         lastname: 'Brown',
@@ -18,7 +19,7 @@ test('POST request - create booking', async ({ request }) => {
         'content-type': 'application/json',
     };
 
-    const response = await request.post('/booking', {
+    const response = await request.post(new URL('/booking', baseURL).toString(), {
         headers,
         data: payload
     });
