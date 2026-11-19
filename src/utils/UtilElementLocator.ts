@@ -1,5 +1,5 @@
 import { expect, type FrameLocator, type Locator, type Page } from '@playwright/test';
-import { createLogger, type Logger } from './logger';
+import { createLogger, stepLog, type Logger } from './logger';
 
 export type LocatorRoot = Page | Locator | FrameLocator;
 export type RoleType = Parameters<Page['getByRole']>[0];
@@ -169,64 +169,80 @@ export class UtilElementLocator {
     }
 
     async text(locator: Locator): Promise<string> {
+        this.trace('text', locator);
         return (await locator.innerText()).trim();
     }
 
     async texts(locator: Locator): Promise<string[]> {
+        this.trace('texts', locator);
         const values = await locator.allInnerTexts();
         return values.map((value) => value.trim());
     }
 
     async attribute(locator: Locator, name: string): Promise<string | null> {
+        this.trace(`attribute(${name})`, locator);
         return locator.getAttribute(name);
     }
 
     async inputValue(locator: Locator): Promise<string> {
+        this.trace('inputValue', locator);
         return locator.inputValue();
     }
 
     async count(locator: Locator): Promise<number> {
+        this.trace('count', locator);
         return locator.count();
     }
 
     async isVisible(locator: Locator): Promise<boolean> {
+        this.trace('isVisible', locator);
         return locator.isVisible();
     }
 
     async isEnabled(locator: Locator): Promise<boolean> {
+        this.trace('isEnabled', locator);
         return locator.isEnabled();
     }
 
     async isChecked(locator: Locator): Promise<boolean> {
+        this.trace('isChecked', locator);
         return locator.isChecked();
     }
 
     async isEditable(locator: Locator): Promise<boolean> {
+        this.trace('isEditable', locator);
         return locator.isEditable();
     }
 
     async waitForVisible(locator: Locator, timeout?: number): Promise<void> {
+        this.trace('waitForVisible', locator);
         await locator.waitFor({ state: 'visible', timeout });
     }
 
     async waitForHidden(locator: Locator, timeout?: number): Promise<void> {
+        this.trace('waitForHidden', locator);
         await locator.waitFor({ state: 'hidden', timeout });
     }
 
     async waitForAttached(locator: Locator, timeout?: number): Promise<void> {
+        this.trace('waitForAttached', locator);
         await locator.waitFor({ state: 'attached', timeout });
     }
 
     async waitForDetached(locator: Locator, timeout?: number): Promise<void> {
+        this.trace('waitForDetached', locator);
         await locator.waitFor({ state: 'detached', timeout });
     }
 
     async waitForCount(locator: Locator, count: number, timeout?: number): Promise<void> {
+        this.trace(`waitForCount(${count})`, locator);
         await expect(locator).toHaveCount(count, { timeout });
     }
 
     private trace(action: string, locator: Locator): void {
-        this.logger.debug(`${action} ${String(locator)}`);
+        const message = `${action} ${String(locator)}`;
+        this.logger.debug(message);
+        stepLog(message);
     }
 }
 

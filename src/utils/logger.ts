@@ -52,4 +52,27 @@ export function createLogger(scope: string): winston.Logger {
 
 export type Logger = winston.Logger;
 
+let stepLogBuffer: string[] | null = null;
+
+export function beginStepLogCapture(): void {
+    stepLogBuffer = [];
+}
+
+export function endStepLogCapture(): string[] {
+    const lines = stepLogBuffer ?? [];
+    stepLogBuffer = null;
+    return lines;
+}
+
+export function stepLog(message: string): void {
+    if (!stepLogBuffer) {
+        return;
+    }
+    const now = new Date();
+    const time = [now.getHours(), now.getMinutes(), now.getSeconds()]
+        .map((part) => String(part).padStart(2, '0'))
+        .join(':');
+    stepLogBuffer.push(`${time} ${message}`);
+}
+
 export default logger;

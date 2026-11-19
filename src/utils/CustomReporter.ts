@@ -1115,7 +1115,7 @@ class CustomTTAReporter implements Reporter {
                         ${test.trace ? `<a href="${test.trace}" target="_blank" class="trace-link-cell">📁 View</a>` : 'N/A'}
                     </td>
                 </tr>
-                <tr class="test-detail-row" id="detail-row-${test.id}" style="display: none;">
+                <tr class="test-detail-row" id="detail-row-${test.id}">
                     <td colspan="14">
                         <div class="test-detail" id="detail-${test.id}">
                             ${this.generateTestDetailPanel(test)}
@@ -1188,13 +1188,13 @@ class CustomTTAReporter implements Reporter {
 
                 html += `
                     <div class="step-item-container">
-                        <div class="step-item ${stepClass} expandable" onclick="toggleStepDetails(this, '${stepId}-details')">
+                        <div class="step-item ${stepClass} expandable expanded" onclick="toggleStepDetails(this, '${stepId}-details')">
                             <span class="step-expand-icon">▶</span>
                             <span class="step-icon ${stepClass}">${stepIcon}</span>
                             <span class="step-name">${this.escapeHtml(step.title)}</span>
                             <span class="step-time">${this.formatDuration(step.duration)}</span>
                         </div>
-                        <div id="${stepId}-details" class="step-details" style="display: none;">
+                        <div id="${stepId}-details" class="step-details">
                             <div class="step-meta">
                                 <span class="step-meta-item">⏱️ Started: ${step.startTime || 'N/A'}</span>
                                 <span class="step-meta-item">⏳ Duration: ${this.formatDuration(step.duration)}</span>
@@ -2273,13 +2273,6 @@ class CustomTTAReporter implements Reporter {
                 }
             });
 
-            // Auto-expand failed tests
-            document.querySelectorAll('.test-row.failed').forEach(row => {
-                const testId = row.getAttribute('data-test-id');
-                if (testId) {
-                    toggleTestDetail(testId);
-                }
-            });
         });
         `;
     }
