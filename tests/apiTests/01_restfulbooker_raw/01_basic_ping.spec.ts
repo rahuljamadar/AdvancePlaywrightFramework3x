@@ -15,4 +15,19 @@ test.describe('Restful Booker booking API', () => {
             expect(response.status()).toBe(201);
         });
     });
+
+    test('TC#12 @p1 - GET: Verify that a missing booking returns not found.', async ({ request }) => {
+        const baseURL = process.env.API_BASE_URL || 'https://restful-booker.herokuapp.com';
+        const bookingId = 999999999;
+        const url = new URL(`/booking/${bookingId}`, baseURL).toString();
+
+        await test.step('Step 1 - Request a booking that does not exist', async () => {
+            logger.info(`[API] GET ${url}`);
+            const response = await request.get(url);
+            const responseBody = await response.text();
+            logger.info(`[API] Response status: ${response.status()}`);
+            logger.info(`[API] Response body: ${responseBody}`);
+            expect(response.status()).toBe(404);
+        });
+    });
 });

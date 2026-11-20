@@ -43,4 +43,27 @@ test.describe('Restful Booker booking API', () => {
             expect(data.booking.bookingdates.checkout).toBe(payload.bookingdates.checkout);
         });
     });
+
+    test('TC#13 @p1 - POST: Verify that malformed JSON is rejected.', async ({ request }) => {
+        const baseURL = process.env.API_BASE_URL || 'https://restful-booker.herokuapp.com';
+        const url = new URL('/booking', baseURL).toString();
+        const malformedPayload = '{ invalid json';
+        const headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        };
+
+        await test.step('Step 1 - Send malformed JSON to POST /booking', async () => {
+            logger.info(`[API] POST ${url}`);
+            logger.info(`[API] Request body: ${malformedPayload}`);
+            const response = await request.post(url, {
+                headers,
+                data: malformedPayload,
+            });
+            const responseBody = await response.text();
+            logger.info(`[API] Response status: ${response.status()}`);
+            logger.info(`[API] Response body: ${responseBody}`);
+            expect(response.status()).toBe(400);
+        });
+    });
 });
