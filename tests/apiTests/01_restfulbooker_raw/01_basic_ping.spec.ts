@@ -1,7 +1,18 @@
 import { test, expect } from '@playwright/test';
+import { logger } from '../../../src/utils/logger';
 
-test('ping request -GET', async ({ request }) => {
-    const baseURL = process.env.API_BASE_URL || 'https://restful-booker.herokuapp.com';
-    const response = await request.get(new URL('/ping', baseURL).toString());
-    expect(response.status()).toBe(201);
+test.describe('Restful Booker booking API', () => {
+    test('TC#1 @p0 - GET: Verify the ping endpoint is working.', async ({ request }) => {
+        const baseURL = process.env.API_BASE_URL || 'https://restful-booker.herokuapp.com';
+        const url = new URL('/ping', baseURL).toString();
+
+        await test.step('Step 1 - Send GET /ping request', async () => {
+            logger.info(`[API] GET ${url}`);
+            const response = await request.get(url);
+            const responseBody = await response.text();
+            logger.info(`[API] Response status: ${response.status()}`);
+            logger.info(`[API] Response body: ${responseBody || '(empty)'}`);
+            expect(response.status()).toBe(201);
+        });
+    });
 });
